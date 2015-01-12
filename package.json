@@ -1,0 +1,34 @@
+{
+  "name": "posthole",
+  "version": "0.0.0",
+  "description": "Posgres ORM for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:fritzy/posthole.git"
+  },
+  "keywords": [
+    "postgres",
+    "db",
+    "database",
+    "orm",
+    "postgresql",
+    "sql",
+    "model",
+    "relation"
+  ],
+  "author": "Nathan Fritz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fritzy/posthole/issues"
+  },
+  "homepage": "https://github.com/fritzy/posthole",
+  "dependencies": {
+    "verymodel": "^1.10.1",
+    "pg-native": "^1.7.3",
+    "pg": "^4.1.1"
+  }
+}
