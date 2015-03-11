@@ -3,7 +3,6 @@ var PostHole = require('./index');
 
 
 PostHole.connect('postgres://fritzy@localhost/fritzy', function (err) {
-    console.log("okay", err);
 var TM = new PostHole.Model({
     test: {},
     crap: {},

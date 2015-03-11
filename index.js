@@ -42,7 +42,6 @@ module.exports = {
 
     connect: function (uri, callback) {
         default_db_uri = uri;
-        console.log("uri", uri);
         pg.connect(uri, function (err, conn, done) {
             default_db = conn;
             callback(err);
