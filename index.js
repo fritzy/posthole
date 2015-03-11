@@ -16,6 +16,7 @@ function Model() {
 
     this.options.pg = default_db;
     this.options.pg_uri = default_db_uri;
+    this.options.field = this.options.field || 'value';
 
     this.addDefinition({
         id: {
@@ -24,6 +25,7 @@ function Model() {
     });
 
     model_cache[this.options.table] = this;
+
 
     baseExtensions(this);
     setupExtensions(this);
