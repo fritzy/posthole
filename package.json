@@ -1,6 +1,6 @@
 {
   "name": "posthole",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Posgres ORM for Node.js",
   "main": "index.js",
   "scripts": {
