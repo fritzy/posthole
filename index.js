@@ -35,6 +35,10 @@ function Model() {
         model_by_id[this.options.tableID] = this;
     };
 
+    this.getDB = function () {
+        return default_db;
+    };
+
 }
 
 Model.prototype = Object.create(verymodel.VeryModel.prototype);
