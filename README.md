@@ -74,6 +74,11 @@ PostHole.connect('postgres://fritzy@localhost/fritzy', function (err) {
 
 ## Index
 
+* [PostHole Functions](#posthole-functions)
+    * [connect](#ph-connect)
+    * [disconnect](#ph-disconnect)
+    * [query](#ph-query)
+    * [Model](#ph-model)
 * [Defining a Model](#defining-a-model-factory)
     * [type](#def-type)
     * [validate](#def-validate)
@@ -84,6 +89,10 @@ PostHole.connect('postgres://fritzy@localhost/fritzy', function (err) {
     * [required](#def-required)
     * [default](#def-default)
     * [private](#def-private)
+* [Model Options](#model-opts)
+* [Model Factory Methods](#model-factory)
+    * [setup](#mf-setup)
+    * [load](#mf-load)
 * [Model Instance Methods](#model-instance-methods)
     * [save](#save)
     * [delete](#delete)
@@ -94,6 +103,69 @@ PostHole.connect('postgres://fritzy@localhost/fritzy', function (err) {
     * [getOldModel](#getOldModel)
     * [loadData](#loadData)
 
+<a name='posthole-functions'></a>
+
+ * [connect](#ph-connect)
+ * [disconnect](#ph-disconnect)
+ * [query](#ph-query)
+ * [Model](#ph-model)
+
+<a name='ph-connect'></a>
+__connect__
+
+Sets the default connection and returns a standard node-postgres `pg` instance.
+
+Arguments:
+
+ * Postgres connection URI
+
+<a name='ph-disconnect'></a>
+__disconnect__
+
+Disconnects the default connection.
+
+<a name='ph-query'></a>
+__query__
+
+Identical to [node-postgres's query](https://github.com/brianc/node-postgres/wiki/Client#method-query-simple), except that resulting fields that match a registered Model Factory will be cast as VeryModel instances even if the names are aliased.
+
+Arguments:
+
+ * SQL Query String
+ * optional array of arguments
+ * optional callback
+
+
+<a name='ph-model'></a>
+__Model__
+
+Constructor for making and registering VeryModel Model Factories that can be associated with JSON/JSONB Postgres Table Fields.
+
+Arguments:
+
+ * Definition Object
+ * Model Options
+
+Example:
+
+```javascript
+var posthole = require('posthole');
+
+var Person = new posthole.Model({
+    //some fields here
+    name: {type: 'string'},
+    phone: {type: 'string'}
+},
+{
+    //options here
+    table: 'some_table',
+    field: 'some_field'
+});
+
+<a name='defining-a-model-factory'></a>
+## Defining a Model
+
+A model defines the types of fields that you might use in an object.
 
 #### Field Definition Properties
 
@@ -109,7 +181,6 @@ Most field definition properties that can be functions are called with the model
 * [processOut](#def-processOut)
 * [onSet](#def-onSet)
 * [derive](#def-derive)
-* [index](#def-index)
 * [required](#def-required)
 * [default](#def-default)
 * [private](#def-private)
@@ -255,8 +326,6 @@ new dulcimer.Model({
         required: true,
         default: "User has nothing to say."
     },
-    author: {foreignKey: 'user'},
-    starredBy: {foreignCollection: 'user'}
 });
 ```
 
@@ -277,8 +346,6 @@ new dulcimer.Model({
             return this.author.fullName + ' has nothing to say.';
         },
     },
-    author: {foreignKey: 'user'},
-    starredBy: {foreignCollection: 'user'}
 });
 ```
 
@@ -293,6 +360,12 @@ __private__
 `private` is a boolean, false by default, which determines whether a field is saved into the object upon [save](#save) and included in the object resulting from [toJSON()](#toJSON).
 
 You can force private methods to be included in saved objects with the model option [savePrivate](#mo-savePrivate), while preserving [toJSON](#toJSON) omittion.
+
+## Model Options
+
+ * table: required for associating the model with a table
+ * field: required for associating the model with a field
+ * primaryKey: optional as the primary key should be detected automatically
 
 ## Model Instance Methods
 
@@ -370,7 +443,6 @@ Outputs a JSON style object from the model.
 
 Boolean Flags:
 
-* noDepth: false by default. If true, does not recursively toJSON objects like [foreignKey](#def-foreignKey)s and [foreignCollection](#def-foreignCollection)s.
 * withPrivate: false by default. If true, includes fields with [private](#def-private) set to true.
 
 Example:
