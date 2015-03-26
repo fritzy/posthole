@@ -42,7 +42,7 @@ function startDemo() {
         //query can be any query, with the fields from many models, renamed with AS or not.
         //query function is the same as postgres module 'pg's query
         PostHole.query("SELECT * FROM person WHERE id = $1", [id], function(err, result) {
-            if (err && result.rows.length > 0) {
+            if (err || result.rows.length !== 1) {
                 console.log(err);
                 return;
             }
@@ -89,6 +89,8 @@ PostHole.connect('postgres://fritzy@localhost/fritzy', function (err) {
     * [required](#def-required)
     * [default](#def-default)
     * [private](#def-private)
+    * [model](#def-model)
+    * [collection](#def-collection)
 * [Model Options](#model-opts)
 * [Model Factory Methods](#model-factory)
     * [setup](#mf-setup)
@@ -184,6 +186,8 @@ Most field definition properties that can be functions are called with the model
 * [required](#def-required)
 * [default](#def-default)
 * [private](#def-private)
+* [model](#def-model)
+* [collection](#def-collection)
 
 <a name='def-type'></a>
 __type__
@@ -351,6 +355,21 @@ new dulcimer.Model({
 
 :heavy\_exclamation\_mark: Warning! Assigning mutable objects as a default can result in the default getting changed over time.
 When assigning objects, arrays, or essentially any advanced type, set default to a function that returns a new instance of the object.
+
+----
+
+<a name='def-model'></a>
+__model__
+
+Models within models. What will we think of next?
+`model` can either be a definition object or a Model Factory instance.
+
+----
+
+<a name='def-collection'></a>
+__collection__
+
+Just like [sub models]('#def-model'), `collection` is a definition object or Model Factory instance, however, the data stored in this field will be an array of structures defined by the definition.
 
 ----
 
